@@ -1,6 +1,7 @@
 package com.example.teacher.study_t;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,10 +9,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,10 +37,19 @@ public class MainActivity extends BaseActivity {
             studyLst.add("ContentProvider");
             studyLst.add("Sqlite3");
 
-            ListAdapter adapter = new ArrayAdapter<String>
-                    (this,android.R.layout.simple_list_item_1,studyLst);
+            StudySampleAdapter adapter = new StudySampleAdapter(this);
+            adapter.addLst(studyLst);
+
+            //ListAdapter adapter = new ArrayAdapter<String>
+            //       (this,android.R.layout.simple_list_item_1,studyLst);
 
             mListStudy.setAdapter(adapter);
+            mListStudy.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                }
+            });
 
     }
 
@@ -54,6 +66,8 @@ public class MainActivity extends BaseActivity {
         public StudySampleAdapter(Context context){
             _context = context;
             _list = new ArrayList();
+            _layoutInflater = (LayoutInflater) context.
+                    getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
         /**
@@ -62,6 +76,7 @@ public class MainActivity extends BaseActivity {
          */
         public void add(String data){
             _list.add(data);
+            notifyDataSetChanged();
         }
 
         /**
@@ -70,7 +85,7 @@ public class MainActivity extends BaseActivity {
          */
         public void addLst(List<String> dataLst){
             for(String data : dataLst)
-                _list.add(data);
+                add(data);
         }
 
         /**
@@ -111,10 +126,28 @@ public class MainActivity extends BaseActivity {
          */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            Holder holder = null;
+            if(convertView == null) {
+                // インスタンス取得
+                convertView = _layoutInflater.inflate(R.layout.study_list_item, null);
+                holder = new Holder();
+                holder.txtTitle = (TextView) convertView.findViewById(R.id.txt_title);
+                convertView.setTag(holder);
+            }else{
+                holder = (Holder) convertView.getTag();
+            }
 
+            // データの取得
+            String title = (String)getItem(position);
 
+            //　データ設定
+            holder.txtTitle.setText(title);
 
-            return null;
+            return convertView;
+        }
+
+        private class Holder{
+            TextView txtTitle;
         }
     }
 

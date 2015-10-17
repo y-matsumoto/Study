@@ -4,14 +4,36 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        private ListView mListStudy;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+
+            mListStudy = (ListView) findViewById(R.id.listStudy);
+
+            List<String> studyLst = new ArrayList<String>();
+            studyLst.add("ライフサイクル");
+            studyLst.add("Service");
+            studyLst.add("ContentProvider");
+            studyLst.add("Sqlite3");
+
+            ListAdapter adapter = new ArrayAdapter<String>
+                    (this,android.R.layout.simple_list_item_1,studyLst);
+
+            mListStudy.setAdapter(adapter);
 
     }
 

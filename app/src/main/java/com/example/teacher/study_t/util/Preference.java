@@ -3,6 +3,9 @@ package com.example.teacher.study_t.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+/**
+ * Androidの内部データ管理（preference）クラス
+ */
 public class Preference {
 
     private final static String PREF_KEY_LOGIN_PASSWORD

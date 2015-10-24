@@ -2,62 +2,106 @@ package com.example.teacher.study_t;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Androidサンプル課題トップページ
+ */
 public class MainActivity extends BaseActivity {
 
+        // フィールドで変数設定
         private ListView mListStudy;
+        private SwipeRefreshLayout mSwipeListStudy;
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
+            // レイアウトインスタンス生成
             mListStudy = (ListView) findViewById(R.id.listStudy);
-            List<String> studyLst = new ArrayList<String>();
-            studyLst.add("ライフサイクル");
-            studyLst.add("Service");
-            studyLst.add("ContentProvider");
-            studyLst.add("Sqlite3");
+            mSwipeListStudy = (SwipeRefreshLayout) findViewById(R.id.swipeListStudy);
 
+            // リストデータ生成
+            final List<StudyItem> studyLst = new ArrayList<>();
+
+            // リストデータ組立
+            studyLst.add(new StudyItem("ライフサイクル",
+                    LifecycleActivity.class));
+            studyLst.add(new StudyItem("Service",
+                    null));
+            studyLst.add(new StudyItem("ContentProvider",
+                    null));
+            studyLst.add(new StudyItem("Sqlite3",
+                    null));
+
+            // リストデータをAdapterへ設定
             StudySampleAdapter adapter = new StudySampleAdapter(this);
             adapter.addLst(studyLst);
 
-            //ListAdapter adapter = new ArrayAdapter<String>
-            //       (this,android.R.layout.simple_list_item_1,studyLst);
-
+            // ListviewのAdapterへ設定
             mListStudy.setAdapter(adapter);
+
+            // Listviewのクリックイベント
             mListStudy.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                    // リストからクリックされたitemを取得
+                    StudyItem item = studyLst.get(position);
+
+                    // 画面遷移
+                    Intent intent =
+                            new Intent(MainActivity.this,
+                                    item.getActivityClass());
+                    startActivity(intent);
                 }
             });
 
     }
 
+    /**
+     * Listview表示用のitemリストクラス
+     */
+    class StudyItem{
+        private String _title;
+        private Class<?> _activityClass;
+
+        public String getTitle(){
+            return _title;
+        }
+
+        public Class<?> getActivityClass(){
+            return _activityClass;
+        }
+
+        public StudyItem(String title,Class<?> activityClass){
+            _title = title;
+            _activityClass = activityClass;
+        }
+    }
+
+    /**
+     * Study用のAdapterクラス　※レイアウトを操作したい場合に用意する
+     */
     public class StudySampleAdapter extends BaseAdapter {
 
         private LayoutInflater _layoutInflater;
         private Context _context;
-        private List<String> _list;
+        private List<StudyItem> _list;
 
         /**
          * コンストラクタ
@@ -74,7 +118,7 @@ public class MainActivity extends BaseActivity {
          * リストデータの追加（単）
          * @param data
          */
-        public void add(String data){
+        public void add(StudyItem data){
             _list.add(data);
             notifyDataSetChanged();
         }
@@ -83,8 +127,8 @@ public class MainActivity extends BaseActivity {
          * リストデータの追加（リスト一式）
          * @param dataLst
          */
-        public void addLst(List<String> dataLst){
-            for(String data : dataLst)
+        public void addLst(List<StudyItem> dataLst){
+            for(StudyItem data : dataLst)
                 add(data);
         }
 
@@ -138,10 +182,10 @@ public class MainActivity extends BaseActivity {
             }
 
             // データの取得
-            String title = (String)getItem(position);
+            StudyItem item = (StudyItem)getItem(position);
 
             //　データ設定
-            holder.txtTitle.setText(title);
+            holder.txtTitle.setText(item.getTitle());
 
             return convertView;
         }

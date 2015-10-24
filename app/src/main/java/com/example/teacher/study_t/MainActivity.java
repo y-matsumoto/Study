@@ -14,7 +14,10 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,22 +38,7 @@ public class MainActivity extends BaseActivity {
             mListStudy = (ListView) findViewById(R.id.listStudy);
             mSwipeListStudy = (SwipeRefreshLayout) findViewById(R.id.swipeListStudy);
 
-            // リストデータ生成
-            final List<StudyItem> studyLst = new ArrayList<>();
-
-            // リストデータ組立
-            studyLst.add(new StudyItem("ライフサイクル",
-                    LifecycleActivity.class));
-            studyLst.add(new StudyItem("Service",
-                    null));
-            studyLst.add(new StudyItem("ContentProvider",
-                    null));
-            studyLst.add(new StudyItem("Sqlite3",
-                    null));
-
-            // リストデータをAdapterへ設定
-            StudySampleAdapter adapter = new StudySampleAdapter(this);
-            adapter.addLst(studyLst);
+            StudySampleAdapter adapter = getDataLoadAdapter();
 
             // ListviewのAdapterへ設定
             mListStudy.setAdapter(adapter);
@@ -71,6 +59,46 @@ public class MainActivity extends BaseActivity {
                 }
             });
 
+            // Listviewをpullして更新するデータイベント
+            mSwipeListStudy.setOnRefreshListener(
+                    new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+
+                    // 更新内容
+                    StudySampleAdapter adapter = getDataLoadAdapter();
+
+                    // ListviewのAdapterへ設定
+                    mListStudy.setAdapter(adapter);
+
+                    if(mSwipeListStudy.isRefreshing())
+                        mSwipeListStudy.setRefreshing(false);
+                }
+            });
+
+    }
+    // リストデータ生成
+    final List<StudyItem> studyLst = new ArrayList<>();
+
+    public StudySampleAdapter getDataLoadAdapter(){
+        studyLst.clear();
+
+        // リストデータ組立
+
+        studyLst.add(new StudyItem("ライフサイクル",
+                LifecycleActivity.class,Calendar.getInstance().getTime()));
+        studyLst.add(new StudyItem("Service",
+                null,Calendar.getInstance().getTime()));
+        studyLst.add(new StudyItem("ContentProvider",
+                null,Calendar.getInstance().getTime()));
+        studyLst.add(new StudyItem("Sqlite3",
+                null,Calendar.getInstance().getTime()));
+
+        // リストデータをAdapterへ設定
+        StudySampleAdapter adapter = new StudySampleAdapter(this);
+        adapter.addLst(studyLst);
+
+        return adapter;
     }
 
     /**
@@ -79,18 +107,24 @@ public class MainActivity extends BaseActivity {
     class StudyItem{
         private String _title;
         private Class<?> _activityClass;
+        private Date _date;
 
         public String getTitle(){
             return _title;
+        }
+
+        public String getDateToString(){
+            return new SimpleDateFormat("yyyy/MM/dd H:mm:s").format(_date);
         }
 
         public Class<?> getActivityClass(){
             return _activityClass;
         }
 
-        public StudyItem(String title,Class<?> activityClass){
+        public StudyItem(String title,Class<?> activityClass,Date date){
             _title = title;
             _activityClass = activityClass;
+            _date = date;
         }
     }
 
@@ -176,6 +210,7 @@ public class MainActivity extends BaseActivity {
                 convertView = _layoutInflater.inflate(R.layout.study_list_item, null);
                 holder = new Holder();
                 holder.txtTitle = (TextView) convertView.findViewById(R.id.txt_title);
+                holder.date = (TextView) convertView.findViewById(R.id.txt_date);
                 convertView.setTag(holder);
             }else{
                 holder = (Holder) convertView.getTag();
@@ -186,12 +221,14 @@ public class MainActivity extends BaseActivity {
 
             //　データ設定
             holder.txtTitle.setText(item.getTitle());
+            holder.date.setText(item.getDateToString());
 
             return convertView;
         }
 
         private class Holder{
             TextView txtTitle;
+            TextView date;
         }
     }
 

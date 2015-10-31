@@ -19,9 +19,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
- * Androidサンプル課題トップページ
+ * Androidサンプル課題トップページ（ListViewの使い方）
  */
 public class MainActivity extends BaseActivity {
 
@@ -65,6 +66,9 @@ public class MainActivity extends BaseActivity {
                 @Override
                 public void onRefresh() {
 
+                    // リストをクリア
+                    studyLst.clear();
+
                     // 更新内容
                     StudySampleAdapter adapter = getDataLoadAdapter();
 
@@ -81,17 +85,28 @@ public class MainActivity extends BaseActivity {
     final List<StudyItem> studyLst = new ArrayList<>();
 
     public StudySampleAdapter getDataLoadAdapter(){
-        studyLst.clear();
+
+        // 四大要素
+        /*
+        1. Activity : 画面
+        2. Intent : 別Activity/applicationの起動
+        3. Service : バックグラウンド処理
+        4. ContentProvider : データ共有
+         */
 
         // リストデータ組立
 
         studyLst.add(new StudyItem("ライフサイクル",
                 LifecycleActivity.class,Calendar.getInstance().getTime()));
+        studyLst.add(new StudyItem("非同期処理",
+                null,Calendar.getInstance().getTime()));
         studyLst.add(new StudyItem("Service",
-                null,Calendar.getInstance().getTime()));
+                null,Calendar.getInstance().getTime())); // 四大要素の1つ
         studyLst.add(new StudyItem("ContentProvider",
-                null,Calendar.getInstance().getTime()));
+                null,Calendar.getInstance().getTime())); // 四大要素の1つ
         studyLst.add(new StudyItem("Sqlite3",
+                null,Calendar.getInstance().getTime()));
+        studyLst.add(new StudyItem("よく使うView/Widget(dialog,menu)",
                 null,Calendar.getInstance().getTime()));
 
         // リストデータをAdapterへ設定
@@ -114,7 +129,9 @@ public class MainActivity extends BaseActivity {
         }
 
         public String getDateToString(){
-            return new SimpleDateFormat("yyyy/MM/dd H:mm:s").format(_date);
+            SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy/MM/dd H:mm:s");
+            dataFormat.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
+            return dataFormat.format(_date);
         }
 
         public Class<?> getActivityClass(){

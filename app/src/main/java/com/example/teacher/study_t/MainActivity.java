@@ -99,7 +99,7 @@ public class MainActivity extends BaseActivity {
         studyLst.add(new StudyItem("ライフサイクル",
                 LifecycleActivity.class,Calendar.getInstance().getTime()));
         studyLst.add(new StudyItem("非同期処理",
-                null,Calendar.getInstance().getTime()));
+                AsyncActivity.class,Calendar.getInstance().getTime()));
         studyLst.add(new StudyItem("Service",
                 null,Calendar.getInstance().getTime())); // 四大要素の1つ
         studyLst.add(new StudyItem("ContentProvider",

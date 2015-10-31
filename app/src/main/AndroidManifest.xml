@@ -20,6 +20,10 @@
             android:name=".LifecycleActivity"
             android:label="@string/title_activity_lifecycle" >
         </activity>
+        <activity
+            android:name=".AsyncActivity"
+            android:label="@string/title_activity_async" >
+        </activity>
     </application>
 
 </manifest>

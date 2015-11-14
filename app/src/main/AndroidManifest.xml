@@ -24,6 +24,16 @@
             android:name=".AsyncActivity"
             android:label="@string/title_activity_async" >
         </activity>
+
+        <service
+            android:name=".StartService"
+            android:exported="false" >
+        </service>
+
+        <activity
+            android:name=".ServiceActivity"
+            android:label="@string/title_activity_service" >
+        </activity>
     </application>
 
 </manifest>

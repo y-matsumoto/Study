@@ -34,6 +34,10 @@
             android:name=".ServiceActivity"
             android:label="@string/title_activity_service" >
         </activity>
+        <activity
+            android:name=".SqliteActivity"
+            android:label="@string/title_activity_sqlite" >
+        </activity>
     </application>
 
 </manifest>

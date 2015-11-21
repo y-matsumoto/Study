@@ -6,4 +6,5 @@
     <string name="title_activity_lifecycle">LifecycleActivity</string>
     <string name="title_activity_async">AsyncActivity</string>
     <string name="title_activity_service">ServiceActivity</string>
+    <string name="title_activity_sqlite">SqliteActivity</string>
 </resources>

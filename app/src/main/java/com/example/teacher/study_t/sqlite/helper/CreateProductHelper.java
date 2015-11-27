@@ -19,7 +19,7 @@ public class CreateProductHelper extends SQLiteOpenHelper{
             String sql = "CREATE TABLE [Users] (" +
                     "[id] INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "[name] VARCHAR(20)," +
-                    "[add] VARCHAR(100)," +
+                    "[address] VARCHAR(100)," +
                     "[tel] VARCHAR(29)" +
                     ");";
             db.execSQL(sql);

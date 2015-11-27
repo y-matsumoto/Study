@@ -1,12 +1,13 @@
 package com.example.teacher.study_t;
 
+import com.example.teacher.study_t.sqlite.helper.CreateProductHelper;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-
-import com.example.teacher.study_t.sqlite.helper.CreateProductHelper;
+import android.widget.Toast;
 
 public class SqliteActivity extends ActionBarActivity {
 
@@ -30,7 +31,7 @@ public class SqliteActivity extends ActionBarActivity {
 
             ContentValues value = new ContentValues();
             value.put("name", "matsumoto");
-            value.put("add", "tokyo");
+            value.put("address", "tokyo");
             value.put("tel", "080-1234-5678");
             mSQLiteDatabase.insert("Users",null,value);
 
@@ -53,17 +54,17 @@ public class SqliteActivity extends ActionBarActivity {
         mSQLiteDatabase = mCreateProductHelper.getReadableDatabase();
 
         try{
-            String columns[] = {"name","tel"};
-            Cursor cursor = mSQLiteDatabase.query("Users",columns,null,null,null,null,null);
+            String columns[] = {"id","name","address","tel"};
+            Cursor cursor = mSQLiteDatabase.query("Users",columns,null,null,null,null,"id");
 
             while(cursor.moveToNext()){
-                //String id = cursor.getString(0);
-                //String name = cursor.getString(1);
-                //String add = cursor.getString(2);
-                //String tel = cursor.getString(3);
+                String id = cursor.getString(0);
+                String name = cursor.getString(1);
+                String address = cursor.getString(2);
+                String tel = cursor.getString(3);
 
-               // Toast.makeText(this,"id:" + id + " name:" + name,
-                //        Toast.LENGTH_LONG).show();
+               Toast.makeText(this, "id:" + id + " name:" + name + " tel:" + tel + " address:" + address,
+                       Toast.LENGTH_LONG).show();
             }
 
         }catch (Exception e){

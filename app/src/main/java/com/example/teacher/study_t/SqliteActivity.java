@@ -1,76 +1,67 @@
 package com.example.teacher.study_t;
 
-import com.example.teacher.study_t.sqlite.helper.CreateProductHelper;
-
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 
+import com.example.teacher.study_t.sqlite.UserHelper;
+import com.example.teacher.study_t.sqlite.entity.UserEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class SqliteActivity extends ActionBarActivity {
 
-    private CreateProductHelper mCreateProductHelper = null;
-    private SQLiteDatabase mSQLiteDatabase = null;
+    UserHelper userHelper = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sqlite);
 
-        mCreateProductHelper = new CreateProductHelper(this);
-
-        // インスタンス生成 ※書き込み用(insert / update / delete)
-        mSQLiteDatabase = mCreateProductHelper.getWritableDatabase();
+        userHelper = new UserHelper(this);
 
         // データ登録
-        try{
-            // トランザクションの開始
-            mSQLiteDatabase.beginTransaction();
 
-            ContentValues value = new ContentValues();
-            value.put("name", "matsumoto");
-            value.put("address", "tokyo");
-            value.put("tel", "080-1234-5678");
-            mSQLiteDatabase.insert("Users",null,value);
+        // トランザクションの開始
+        userHelper.startTransaction();
 
-            // トランザクションのコミット
-            mSQLiteDatabase.setTransactionSuccessful();
+        List<Boolean> chkLst = new ArrayList<>();
 
-        }catch(Exception e){
+        // データ追加
+        chkLst.add(userHelper.insert("matsumoto", "tokyo", "080-1234-5678"));
+        chkLst.add(userHelper.insert("suzuki", "saitama", "080-1234-5678"));
+        chkLst.add(userHelper.insert("sato", "kanagawa", "080-1234-5678"));
 
-        }finally {
-            mSQLiteDatabase.endTransaction();
-        }
+        // 検証
+        boolean isCommit = true;
+        for(Boolean result : chkLst)
+            if(!result){
+                isCommit = false;
+                break;
+            }
 
-        // データ更新
+        // トランザクションのコミット
+        if(isCommit) userHelper.commitTransaction();
 
-
-        // データ削除
-
+        userHelper.endTransaction();
 
         // データ表示
-        mSQLiteDatabase = mCreateProductHelper.getReadableDatabase();
-
         try{
-            String columns[] = {"id","name","address","tel"};
-            Cursor cursor = mSQLiteDatabase.query("Users",columns,null,null,null,null,"id");
+           List<UserEntity> userEntityLst =
+                   userHelper.select("id = 1");
+           for(UserEntity entity : userEntityLst){
 
-            while(cursor.moveToNext()){
-                String id = cursor.getString(0);
-                String name = cursor.getString(1);
-                String address = cursor.getString(2);
-                String tel = cursor.getString(3);
-
-               Toast.makeText(this, "id:" + id + " name:" + name + " tel:" + tel + " address:" + address,
+               Toast.makeText(this, "id:" + entity.getId() +
+                               " name:" + entity.getName() +
+                               " tel:" + entity.getTel() +
+                               " address:" + entity.getAddress(),
                        Toast.LENGTH_LONG).show();
             }
 
         }catch (Exception e){
-            String test = "";
         }
-        mSQLiteDatabase.close();
+        userHelper.close();
 
     }
 

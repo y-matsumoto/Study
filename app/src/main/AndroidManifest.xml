@@ -38,6 +38,10 @@
             android:name=".SqliteActivity"
             android:label="@string/title_activity_sqlite" >
         </activity>
+        <activity
+            android:name=".ContentProviderActivity"
+            android:label="@string/title_activity_content_provider" >
+        </activity>
     </application>
 
 </manifest>

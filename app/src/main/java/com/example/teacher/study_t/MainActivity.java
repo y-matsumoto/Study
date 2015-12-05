@@ -103,7 +103,7 @@ public class MainActivity extends BaseActivity {
         studyLst.add(new StudyItem("Service",
                 ServiceActivity.class,Calendar.getInstance().getTime())); // 四大要素の1つ
         studyLst.add(new StudyItem("ContentProvider",
-                null,Calendar.getInstance().getTime())); // 四大要素の1つ
+                ContentProviderActivity.class,Calendar.getInstance().getTime())); // 四大要素の1つ
         studyLst.add(new StudyItem("Sqlite3",
                 SqliteActivity.class,Calendar.getInstance().getTime()));
         studyLst.add(new StudyItem("よく使うView/Widget(dialog,menu)",

@@ -1,7 +1,6 @@
 package com.example.teacher.study_t;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 
 import com.example.teacher.study_t.sqlite.UserHelper;
@@ -10,7 +9,7 @@ import com.example.teacher.study_t.sqlite.entity.UserEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqliteActivity extends ActionBarActivity {
+public class SqliteActivity extends BaseActivity {
 
     UserHelper userHelper = null;
 

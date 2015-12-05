@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.teacher.study_t" >
 
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -41,6 +43,10 @@
         <activity
             android:name=".ContentProviderActivity"
             android:label="@string/title_activity_content_provider" >
+        </activity>
+        <activity
+            android:name=".DialogMenuActivity"
+            android:label="@string/title_activity_dialog_menu" >
         </activity>
     </application>
 

@@ -2,11 +2,10 @@ package com.example.teacher.study_t;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.EditText;
 
-public class ServiceActivity extends ActionBarActivity {
+public class ServiceActivity extends BaseActivity {
 
     private EditText mEditStopCount;
 

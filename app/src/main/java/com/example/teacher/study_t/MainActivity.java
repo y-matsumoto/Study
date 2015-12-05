@@ -104,10 +104,10 @@ public class MainActivity extends BaseActivity {
                 ServiceActivity.class,Calendar.getInstance().getTime())); // 四大要素の1つ
         studyLst.add(new StudyItem("ContentProvider",
                 ContentProviderActivity.class,Calendar.getInstance().getTime())); // 四大要素の1つ
-        studyLst.add(new StudyItem("Sqlite3",
+        studyLst.add(new StudyItem("SQLite3",
                 SqliteActivity.class,Calendar.getInstance().getTime()));
         studyLst.add(new StudyItem("よく使うView/Widget(dialog,menu)",
-                null,Calendar.getInstance().getTime()));
+                DialogMenuActivity.class,Calendar.getInstance().getTime()));
 
         // リストデータをAdapterへ設定
         StudySampleAdapter adapter = new StudySampleAdapter(this);

@@ -1,38 +1,34 @@
 package com.example.teacher.study_t;
 
+import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.provider.ContactsContract;
+import android.widget.Toast;
 
 
-public class ContentProviderActivity extends ActionBarActivity {
+public class ContentProviderActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content_provider);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_content, menu);
-        return true;
-    }
+        Cursor cursor = managedQuery(
+                ContactsContract.Contacts.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if(cursor.getCount() == 0) {
+            Toast.makeText(this, "連絡先がありません。",Toast.LENGTH_LONG).show();
+        }else {
+            while (cursor.moveToNext()) {
+                String name = cursor.getString(cursor.getColumnIndex(
+                        ContactsContract.Contacts.DISPLAY_NAME));
+                Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+            }
         }
-
-        return super.onOptionsItemSelected(item);
     }
+
 }
